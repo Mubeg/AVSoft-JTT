@@ -6,7 +6,11 @@ clean:
 test1:
 	sudo dmesg -C
 	sudo insmod test_task.ko
-	echo '10' > /proc/test_task
+
+	echo '1' > /proc/test_task
+	echo '2' > /proc/test_task
 	cat /proc/test_task
-	dmesg
+	echo '3' > /proc/test_task
+	cat /proc/test_task
+
 	sudo rmmod test_task
