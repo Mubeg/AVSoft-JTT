@@ -9,7 +9,7 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Mubeg");
 MODULE_DESCRIPTION("A loadable Linux module as AVSoft Test task.");
-MODULE_VERSION("0.11");
+MODULE_VERSION("0.12");
 
 #define __LOCATION__  __FILE__, __LINE__, __PRETTY_FUNCTION__
 
@@ -32,6 +32,8 @@ LIST_HEAD(list_for_data);
 static int list_add_elem(struct list_head *lst)
 {
 
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+
     elem_list_t *elem = kmalloc(sizeof(elem_list_t), GFP_KERNEL);
 
     if (!elem)
@@ -41,11 +43,15 @@ static int list_add_elem(struct list_head *lst)
     elem->size = 0;
     list_add(&elem->list, lst);
 
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+
     return 0;
 }
 
 static void list_destroy(struct list_head *lst)
 {
+
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
 
     struct list_head *i = NULL, *n = NULL;
     elem_list_t *elem = NULL;
@@ -55,17 +61,24 @@ static void list_destroy(struct list_head *lst)
         list_del(i);
         kfree(elem);
     }
+
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+
 }
 
 static struct proc_dir_entry *proc_entry = NULL;
 
 static ssize_t write(struct file *file, const char __user *user_buff, size_t count, loff_t *offset) {
 
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+
     struct list_head *i = &list_for_data;
     elem_list_t *elem = NULL;
     size_t remaining = count;
 
     while(remaining > 0){
+
+        printk(KERN_DEBUG "Function %s enter while loop, remaining = %d\n", __PRETTY_FUNCTION__, remaining);
 
         elem = list_entry(i, elem_list_t, list);
 
@@ -93,10 +106,14 @@ static ssize_t write(struct file *file, const char __user *user_buff, size_t cou
 
     }
 
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+
     return count;
 }
  
 static ssize_t read(struct file *file, char __user *user_buff, size_t count, loff_t *offset) {
+
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
 
     struct list_head *i = NULL;
     elem_list_t *elem = NULL;
@@ -121,6 +138,7 @@ static ssize_t read(struct file *file, char __user *user_buff, size_t count, lof
         sum += len;
     }
 
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
     
     return sum;
 }
@@ -135,15 +153,25 @@ static struct file_operations operations = {
 
 static int __init test_task_init(void) {
 
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+
     proc_entry = proc_create("test_task", 0666, NULL, &operations);
     INIT_LIST_HEAD(&list_for_data);
+
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+
 
     return 0;
 }
 static void __exit test_task_exit(void) {
 
+    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+
     proc_remove(proc_entry);
     list_destroy(&list_for_data);
+
+    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+
 }
 
 module_init(test_task_init);
