@@ -1,3 +1,5 @@
+//#define DEBUG
+ 
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -10,7 +12,8 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Mubeg");
 MODULE_DESCRIPTION("A loadable Linux module as AVSoft Test task.");
-MODULE_VERSION("0.2");
+MODULE_VERSION("0.3");
+
 
 #define __LOCATION__  __FILE__, __LINE__, __PRETTY_FUNCTION__
 
@@ -33,7 +36,7 @@ LIST_HEAD(list_for_data);
 static int list_add_elem(struct list_head *lst)
 {
 
-    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
     elem_list_t *elem = kmalloc(sizeof(elem_list_t), GFP_KERNEL);
 
@@ -43,7 +46,7 @@ static int list_add_elem(struct list_head *lst)
     elem->size = 0;
     list_add_tail(&elem->list, lst);
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
     return 0;
 }
@@ -51,7 +54,7 @@ static int list_add_elem(struct list_head *lst)
 static void list_destroy(struct list_head *lst)
 {
 
-    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
     struct list_head *i = NULL, *n = NULL;
     elem_list_t *elem = NULL;
@@ -62,7 +65,7 @@ static void list_destroy(struct list_head *lst)
         kfree(elem);
     }
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
 }
 
@@ -70,7 +73,7 @@ static struct proc_dir_entry *proc_entry = NULL;
 
 static ssize_t write(struct file *file, const char __user *user_buff, size_t count, loff_t *offset) {
 
-    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
     struct list_head *i = list_for_data.next; // i = first actual page
     elem_list_t *elem = NULL;
@@ -78,26 +81,26 @@ static ssize_t write(struct file *file, const char __user *user_buff, size_t cou
 
     while(remaining > 0){
 
-        printk(KERN_DEBUG "Function %s enter while loop, remaining = %lu\n", __PRETTY_FUNCTION__, remaining);
+        pr_devel("Function %s enter while loop, remaining = %lu\n", __PRETTY_FUNCTION__, remaining);
 
         elem = list_entry(i, elem_list_t, list);
 
-        printk(KERN_DEBUG "Function %s in while loop brk#1\n", __PRETTY_FUNCTION__);
+        pr_devel("Function %s in while loop brk#1\n", __PRETTY_FUNCTION__);
 
         if(list_is_last(&elem->list, &list_for_data) && elem->size == ELEM_DATA_SIZE){
 
-            printk(KERN_DEBUG "Function %s in while loop brk#2\n", __PRETTY_FUNCTION__);
+            pr_devel("Function %s in while loop brk#2\n", __PRETTY_FUNCTION__);
             list_add_elem(&list_for_data);
             i = i->next;
             continue;
         }
         else if(elem->size == ELEM_DATA_SIZE){
-        printk(KERN_DEBUG "Function %s in while loop brk#3\n", __PRETTY_FUNCTION__);
+        pr_devel("Function %s in while loop brk#3\n", __PRETTY_FUNCTION__);
             i = i->next;
             continue;
         }
 
-        printk(KERN_DEBUG "Function %s in while loop brk#4\n", __PRETTY_FUNCTION__);
+        pr_devel("Function %s in while loop brk#4\n", __PRETTY_FUNCTION__);
 
         size_t len = min(ELEM_DATA_SIZE - elem->size, remaining);
         
@@ -111,14 +114,14 @@ static ssize_t write(struct file *file, const char __user *user_buff, size_t cou
 
     }
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
     return count;
 }
  
 static ssize_t read(struct file *file, char __user *user_buff, size_t count, loff_t *offset) {
 
-    printk(KERN_DEBUG "Function %s enter, count = %ld, offset = %llu\n", __PRETTY_FUNCTION__, count, *offset);
+    pr_devel("Function %s enter, count = %ld, offset = %llu\n", __PRETTY_FUNCTION__, count, *offset);
 
     struct list_head *i = NULL;
     elem_list_t *elem = NULL;
@@ -127,14 +130,14 @@ static ssize_t read(struct file *file, char __user *user_buff, size_t count, lof
 
     list_for_each(i, &list_for_data) {
 
-        printk(KERN_DEBUG "Function %s in list_loop\n", __PRETTY_FUNCTION__);
+        pr_devel("Function %s in list_loop\n", __PRETTY_FUNCTION__);
 
         if(logical_offset >= ELEM_DATA_SIZE){
             logical_offset -= ELEM_DATA_SIZE;
             continue;
         }
 
-        printk(KERN_DEBUG "Function %s in list_loop brk#0\n", __PRETTY_FUNCTION__);
+        pr_devel("Function %s in list_loop brk#0\n", __PRETTY_FUNCTION__);
 
         elem = list_entry(i, elem_list_t, list);
 
@@ -149,7 +152,7 @@ static ssize_t read(struct file *file, char __user *user_buff, size_t count, lof
             }
             else{
 
-                printk(KERN_DEBUG "Function %s exit on big offset\n", __PRETTY_FUNCTION__);
+                pr_devel("Function %s exit on big offset\n", __PRETTY_FUNCTION__);
 
                 return 0; // offset too far -> read complete
             }
@@ -159,18 +162,18 @@ static ssize_t read(struct file *file, char __user *user_buff, size_t count, lof
         len = min(count - sum, len);
 
         if(copy_to_user(user_buff, elem->data + local_offset, len)){
-            printk(KERN_DEBUG "Function %s in list_loop brk#3, len = %lu", __PRETTY_FUNCTION__, len);
+            pr_devel("Function %s in list_loop brk#3, len = %lu", __PRETTY_FUNCTION__, len);
             return -EFAULT;
         }
 
-        printk(KERN_DEBUG "Function %s in list_loop brk#1, sum = %lu, len = %lu\n", __PRETTY_FUNCTION__, sum, len);
+        pr_devel("Function %s in list_loop brk#1, sum = %lu, len = %lu\n", __PRETTY_FUNCTION__, sum, len);
 
         *offset += len;
         user_buff += len;
         sum += len;
     }
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
     
     return sum;
 }
@@ -199,25 +202,25 @@ static struct proc_ops operations = {
 
 static int __init test_task_init(void) {
 
-    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
     proc_entry = proc_create("test_task", 0666, NULL, &operations);
     INIT_LIST_HEAD(&list_for_data);
     list_add_elem(&list_for_data);  // Init first page
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
 
     return 0;
 }
 static void __exit test_task_exit(void) {
 
-    printk(KERN_DEBUG "Function %s enter\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
     proc_remove(proc_entry);
     list_destroy(&list_for_data);
 
-    printk(KERN_DEBUG "Function %s exit\n", __PRETTY_FUNCTION__);
+    pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
 }
 
