@@ -1,5 +1,13 @@
+/*! \file test_task.c
+    \brief Source code file
+    
+    This project is a testing task for AVSoft company.
+    Level: Junior
+    Direction: Linux kernel modules
+    */
+
 //#define DEBUG
- 
+
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -12,33 +20,58 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Mubeg");
 MODULE_DESCRIPTION("A loadable Linux module as AVSoft Test task.");
-MODULE_VERSION("0.3");
+MODULE_VERSION("1.0");
 
-
-#define __LOCATION__  __FILE__, __LINE__, __PRETTY_FUNCTION__
-
+/**
+ * Unified buffer size variable [unused].
+ */
 #define MAX_BUFF_SIZE 4000
 
+/**
+ * Type of a stored element.
+ */
 typedef char Elem_t;
+
+/**
+ * Size of an array of data in one list element.
+ */
 #define ELEM_DATA_SIZE 4000
 
-
+/**
+ * List structure for use with linux kernel list.h.
+ */
 typedef struct elem_list {
 
+    /**
+     * Array of elements in list.
+     * 
+     * Here it serves a purpose of localizing data into chuncks of ~4KB
+     */ 
     Elem_t data[ELEM_DATA_SIZE];
+    /**
+     * Size of valid data stored in data
+     */
     size_t size;
     struct list_head list;
 
 } elem_list_t;
 
+/**
+ * Creates list with lst_for_data as head
+ */
 LIST_HEAD(list_for_data);
 
-static int list_add_elem(struct list_head *lst)
-{
+/*!
+ Adds an initialized empty element into the end of list.
+ Initialises size = 0 JIC.
+ \param lst pointer to a list head
+ \return Error code
+ */
+static int list_add_elem(struct list_head *lst){
 
     pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
-    elem_list_t *elem = kmalloc(sizeof(elem_list_t), GFP_KERNEL);
+    elem_list_t *elem = kcalloc(sizeof(Elem_t), sizeof(elem_list_t), GFP_KERNEL);
 
     if (!elem)
         return -ENOMEM;
@@ -51,8 +84,11 @@ static int list_add_elem(struct list_head *lst)
     return 0;
 }
 
-static void list_destroy(struct list_head *lst)
-{
+/**
+ * Destuctor for all of the list
+ * \param lst pointer to a list head
+ */
+static void list_destroy(struct list_head *lst){
 
     pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
 
@@ -69,8 +105,15 @@ static void list_destroy(struct list_head *lst)
 
 }
 
-static struct proc_dir_entry *proc_entry = NULL;
-
+/**
+ * Writes to list.
+ * Appends logical string of data with new input. Performs search {potenrial for optimization} for non-full member of list and add to it's data untill it runs out of space, then add new node to list.
+ * @param file pointer to a file structure
+ * @param user_buff pointer to a buffer in user space from which the copying will be performed
+ * @param[in] count number of bytes to write
+ * @param[out] offset pointer to offset after partial write
+ * @return number of written bytes
+ */
 static ssize_t write(struct file *file, const char __user *user_buff, size_t count, loff_t *offset) {
 
     pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
@@ -118,7 +161,16 @@ static ssize_t write(struct file *file, const char __user *user_buff, size_t cou
 
     return count;
 }
- 
+
+/**
+ * Reads from list.
+ * Reads elements of list accordingly to offset and outputs them to user buffer.
+ * @param file pointer to a file structure
+ * @param user_buff pointer to a buffer in user space into which the copying will be performed
+ * @param[in] count number of bytes to read
+ * @param offset pointer to offset
+ * @return number of read bytes
+ */
 static ssize_t read(struct file *file, char __user *user_buff, size_t count, loff_t *offset) {
 
     pr_devel("Function %s enter, count = %ld, offset = %llu\n", __PRETTY_FUNCTION__, count, *offset);
@@ -178,9 +230,13 @@ static ssize_t read(struct file *file, char __user *user_buff, size_t count, lof
     return sum;
 }
 
-
+/**
+ * Linux kernel 5.6.0 moved to a new structure for sharing file operatons of a module
+ */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5,6,0)
-
+/**
+ * File operations for Linux kernel < 5.6.0.
+ */
 static struct file_operations operations = {
 
     .owner = THIS_MODULE,
@@ -190,6 +246,9 @@ static struct file_operations operations = {
 };
 
 #else
+/**
+ * File operations for Linux kernel >= 5.6.0.
+ */
 static struct proc_ops operations = {
 
     .proc_read = read,
@@ -199,7 +258,14 @@ static struct proc_ops operations = {
 #endif
  
 
+/**
+ * Proc_fs structure
+ */
+static struct proc_dir_entry *proc_entry = NULL;
 
+/**
+ * Init linux kernel module on load/
+ */
 static int __init test_task_init(void) {
 
     pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
@@ -213,6 +279,10 @@ static int __init test_task_init(void) {
 
     return 0;
 }
+
+/**
+ * Deinit linux kernel module on unload.
+ */
 static void __exit test_task_exit(void) {
 
     pr_devel("Function %s enter\n", __PRETTY_FUNCTION__);
@@ -223,6 +293,7 @@ static void __exit test_task_exit(void) {
     pr_devel("Function %s exit\n", __PRETTY_FUNCTION__);
 
 }
+
 
 module_init(test_task_init);
 module_exit(test_task_exit);

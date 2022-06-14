@@ -1,0 +1,201 @@
+\hypertarget{test__task_8c}{}\doxysection{test\+\_\+task.\+c File Reference}
+\label{test__task_8c}\index{test\_task.c@{test\_task.c}}
+
+
+Source code file.  
+
+
+{\ttfamily \#include $<$linux/init.\+h$>$}\newline
+{\ttfamily \#include $<$linux/module.\+h$>$}\newline
+{\ttfamily \#include $<$linux/kernel.\+h$>$}\newline
+{\ttfamily \#include $<$linux/proc\+\_\+fs.\+h$>$}\newline
+{\ttfamily \#include $<$linux/uaccess.\+h$>$}\newline
+{\ttfamily \#include $<$linux/list.\+h$>$}\newline
+{\ttfamily \#include $<$linux/slab.\+h$>$}\newline
+{\ttfamily \#include $<$linux/version.\+h$>$}\newline
+Include dependency graph for test\+\_\+task.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test__task_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structelem__list}{elem\+\_\+list}}
+\begin{DoxyCompactList}\small\item\em List structure for use with linux kernel list.\+h. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{test__task_8c_a212979f5fc9dcf0a420e90b9b21d780a}\label{test__task_8c_a212979f5fc9dcf0a420e90b9b21d780a}} 
+\#define \mbox{\hyperlink{test__task_8c_a212979f5fc9dcf0a420e90b9b21d780a}{M\+A\+X\+\_\+\+B\+U\+F\+F\+\_\+\+S\+I\+ZE}}~4000
+\begin{DoxyCompactList}\small\item\em Unified buffer size variable \mbox{[}unused\mbox{]}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_a95f149451ff7bc6e5c5b60beb18e89df}\label{test__task_8c_a95f149451ff7bc6e5c5b60beb18e89df}} 
+\#define \mbox{\hyperlink{test__task_8c_a95f149451ff7bc6e5c5b60beb18e89df}{E\+L\+E\+M\+\_\+\+D\+A\+T\+A\+\_\+\+S\+I\+ZE}}~4000
+\begin{DoxyCompactList}\small\item\em Size of an array of data in one list element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{test__task_8c_a17f1a6e1b031a38a2e718ace615be0b2}\label{test__task_8c_a17f1a6e1b031a38a2e718ace615be0b2}} 
+typedef char \mbox{\hyperlink{test__task_8c_a17f1a6e1b031a38a2e718ace615be0b2}{Elem\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Type of a stored element. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_a0240ad4381b88c713133a2295d096924}\label{test__task_8c_a0240ad4381b88c713133a2295d096924}} 
+typedef struct \mbox{\hyperlink{structelem__list}{elem\+\_\+list}} \mbox{\hyperlink{test__task_8c_a0240ad4381b88c713133a2295d096924}{elem\+\_\+list\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em List structure for use with linux kernel list.\+h. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{test__task_8c_ad94b36675e7eb067ea3ce6ff9e244a44}\label{test__task_8c_ad94b36675e7eb067ea3ce6ff9e244a44}} 
+{\bfseries M\+O\+D\+U\+L\+E\+\_\+\+L\+I\+C\+E\+N\+SE} (\char`\"{}G\+PL\char`\"{})
+\item 
+\mbox{\Hypertarget{test__task_8c_aed03968efc4bf8cd59c760eaf56b5316}\label{test__task_8c_aed03968efc4bf8cd59c760eaf56b5316}} 
+{\bfseries M\+O\+D\+U\+L\+E\+\_\+\+A\+U\+T\+H\+OR} (\char`\"{}Mubeg\char`\"{})
+\item 
+\mbox{\Hypertarget{test__task_8c_a4f7d7770bcbb6fce9e3d0670ea35ccea}\label{test__task_8c_a4f7d7770bcbb6fce9e3d0670ea35ccea}} 
+{\bfseries M\+O\+D\+U\+L\+E\+\_\+\+D\+E\+S\+C\+R\+I\+P\+T\+I\+ON} (\char`\"{}A loadable Linux module as A\+V\+Soft Test task.\char`\"{})
+\item 
+\mbox{\Hypertarget{test__task_8c_aa826089491851b27cf53548f63b2fc60}\label{test__task_8c_aa826089491851b27cf53548f63b2fc60}} 
+{\bfseries M\+O\+D\+U\+L\+E\+\_\+\+V\+E\+R\+S\+I\+ON} (\char`\"{}0.\+4\char`\"{})
+\item 
+\mbox{\Hypertarget{test__task_8c_a1ac913f01aca317e31eb9e7d3a1654df}\label{test__task_8c_a1ac913f01aca317e31eb9e7d3a1654df}} 
+\mbox{\hyperlink{test__task_8c_a1ac913f01aca317e31eb9e7d3a1654df}{L\+I\+S\+T\+\_\+\+H\+E\+AD}} (list\+\_\+for\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Creates list with lst\+\_\+for\+\_\+data as head. \end{DoxyCompactList}\item 
+static int \mbox{\hyperlink{test__task_8c_ac50061f12c5820e04d68ce35f205fd9f}{list\+\_\+add\+\_\+elem}} (struct list\+\_\+head $\ast$lst)
+\item 
+static void \mbox{\hyperlink{test__task_8c_ac4209ac4a5701798c73364f6b906ff24}{list\+\_\+destroy}} (struct list\+\_\+head $\ast$lst)
+\begin{DoxyCompactList}\small\item\em Destuctor for all of the list. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{test__task_8c_a6b6e6d5d51aa45fb8c9140cf9e1a0cd1}{write}} (struct file $\ast$file, const char \+\_\+\+\_\+user $\ast$user\+\_\+buff, size\+\_\+t count, loff\+\_\+t $\ast$offset)
+\begin{DoxyCompactList}\small\item\em Writes to list. \end{DoxyCompactList}\item 
+static ssize\+\_\+t \mbox{\hyperlink{test__task_8c_a4cb5b4dcb9fe081a90ccb5a0b2d5c903}{read}} (struct file $\ast$file, char \+\_\+\+\_\+user $\ast$user\+\_\+buff, size\+\_\+t count, loff\+\_\+t $\ast$offset)
+\begin{DoxyCompactList}\small\item\em Reads from list. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_aba37f38c31674e5b5637178dbaedcbba}\label{test__task_8c_aba37f38c31674e5b5637178dbaedcbba}} 
+static int \+\_\+\+\_\+init \mbox{\hyperlink{test__task_8c_aba37f38c31674e5b5637178dbaedcbba}{test\+\_\+task\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Init linux kernel module on load/. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_a3b02d745d2dd24615f03c42801aaee8f}\label{test__task_8c_a3b02d745d2dd24615f03c42801aaee8f}} 
+static void \+\_\+\+\_\+exit \mbox{\hyperlink{test__task_8c_a3b02d745d2dd24615f03c42801aaee8f}{test\+\_\+task\+\_\+exit}} (void)
+\begin{DoxyCompactList}\small\item\em Deinit linux kernel module on unload. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_a7ce1c3647530d55c55a54618e0344723}\label{test__task_8c_a7ce1c3647530d55c55a54618e0344723}} 
+{\bfseries module\+\_\+init} (\mbox{\hyperlink{test__task_8c_aba37f38c31674e5b5637178dbaedcbba}{test\+\_\+task\+\_\+init}})
+\item 
+\mbox{\Hypertarget{test__task_8c_a4faecb921bb3523fb333b54f2dde7bd9}\label{test__task_8c_a4faecb921bb3523fb333b54f2dde7bd9}} 
+{\bfseries module\+\_\+exit} (\mbox{\hyperlink{test__task_8c_a3b02d745d2dd24615f03c42801aaee8f}{test\+\_\+task\+\_\+exit}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static struct proc\+\_\+ops \mbox{\hyperlink{test__task_8c_a46de2f048c57180b62c19d2de9645f15}{operations}}
+\begin{DoxyCompactList}\small\item\em Linux kernel 5.\+6.\+0 moved to a new structure for sharing file operatons of a module. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test__task_8c_a57214dad9dbb35f608134563f036440c}\label{test__task_8c_a57214dad9dbb35f608134563f036440c}} 
+static struct proc\+\_\+dir\+\_\+entry $\ast$ \mbox{\hyperlink{test__task_8c_a57214dad9dbb35f608134563f036440c}{proc\+\_\+entry}} = N\+U\+LL
+\begin{DoxyCompactList}\small\item\em Proc\+\_\+fs structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Source code file. 
+
+This project is a testing task for A\+V\+Soft company. Level\+: Junior Direction\+: Linux kernel modules 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test__task_8c_ac50061f12c5820e04d68ce35f205fd9f}\label{test__task_8c_ac50061f12c5820e04d68ce35f205fd9f}} 
+\index{test\_task.c@{test\_task.c}!list\_add\_elem@{list\_add\_elem}}
+\index{list\_add\_elem@{list\_add\_elem}!test\_task.c@{test\_task.c}}
+\doxysubsubsection{\texorpdfstring{list\_add\_elem()}{list\_add\_elem()}}
+{\footnotesize\ttfamily static int list\+\_\+add\+\_\+elem (\begin{DoxyParamCaption}\item[{struct list\+\_\+head $\ast$}]{lst }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Adds an initialized empty element into the end of list. Initialises size = 0 J\+IC. 
+\begin{DoxyParams}{Parameters}
+{\em lst} & pointer to a list head \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{test__task_8c_ac4209ac4a5701798c73364f6b906ff24}\label{test__task_8c_ac4209ac4a5701798c73364f6b906ff24}} 
+\index{test\_task.c@{test\_task.c}!list\_destroy@{list\_destroy}}
+\index{list\_destroy@{list\_destroy}!test\_task.c@{test\_task.c}}
+\doxysubsubsection{\texorpdfstring{list\_destroy()}{list\_destroy()}}
+{\footnotesize\ttfamily static void list\+\_\+destroy (\begin{DoxyParamCaption}\item[{struct list\+\_\+head $\ast$}]{lst }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Destuctor for all of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lst} & pointer to a list head \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{test__task_8c_a4cb5b4dcb9fe081a90ccb5a0b2d5c903}\label{test__task_8c_a4cb5b4dcb9fe081a90ccb5a0b2d5c903}} 
+\index{test\_task.c@{test\_task.c}!read@{read}}
+\index{read@{read}!test\_task.c@{test\_task.c}}
+\doxysubsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily static ssize\+\_\+t read (\begin{DoxyParamCaption}\item[{struct file $\ast$}]{file,  }\item[{char \+\_\+\+\_\+user $\ast$}]{user\+\_\+buff,  }\item[{size\+\_\+t}]{count,  }\item[{loff\+\_\+t $\ast$}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads from list. 
+
+Reads elements of list accordingly to offset and outputs them to user buffer. 
+\begin{DoxyParams}[1]{Parameters}
+ & {\em file} & pointer to a file structure \\
+\hline
+ & {\em user\+\_\+buff} & pointer to a buffer in user space into which the copying will be performed \\
+\hline
+\mbox{\texttt{ in}}  & {\em count} & number of bytes to read \\
+\hline
+ & {\em offset} & pointer to offset \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of read bytes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{test__task_8c_a6b6e6d5d51aa45fb8c9140cf9e1a0cd1}\label{test__task_8c_a6b6e6d5d51aa45fb8c9140cf9e1a0cd1}} 
+\index{test\_task.c@{test\_task.c}!write@{write}}
+\index{write@{write}!test\_task.c@{test\_task.c}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily static ssize\+\_\+t write (\begin{DoxyParamCaption}\item[{struct file $\ast$}]{file,  }\item[{const char \+\_\+\+\_\+user $\ast$}]{user\+\_\+buff,  }\item[{size\+\_\+t}]{count,  }\item[{loff\+\_\+t $\ast$}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Writes to list. 
+
+Appends logical string of data with new input. Performs search \{potenrial for optimization\} for non-\/full member of list and add to it\textquotesingle{}s data untill it runs out of space, then add new node to list. 
+\begin{DoxyParams}[1]{Parameters}
+ & {\em file} & pointer to a file structure \\
+\hline
+ & {\em user\+\_\+buff} & pointer to a buffer in user space from which the copying will be performed \\
+\hline
+\mbox{\texttt{ in}}  & {\em count} & number of bytes to write \\
+\hline
+\mbox{\texttt{ out}}  & {\em offset} & pointer to offset after partial write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+number of written bytes 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{test__task_8c_a46de2f048c57180b62c19d2de9645f15}\label{test__task_8c_a46de2f048c57180b62c19d2de9645f15}} 
+\index{test\_task.c@{test\_task.c}!operations@{operations}}
+\index{operations@{operations}!test\_task.c@{test\_task.c}}
+\doxysubsubsection{\texorpdfstring{operations}{operations}}
+{\footnotesize\ttfamily struct proc\+\_\+ops operations\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{}
+\DoxyCodeLine{    .proc\_read = \mbox{\hyperlink{test__task_8c_a4cb5b4dcb9fe081a90ccb5a0b2d5c903}{read}},}
+\DoxyCodeLine{    .proc\_write = \mbox{\hyperlink{test__task_8c_a6b6e6d5d51aa45fb8c9140cf9e1a0cd1}{write}},}
+\DoxyCodeLine{}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Linux kernel 5.\+6.\+0 moved to a new structure for sharing file operatons of a module. 
+
+File operations for Linux kernel $>$= 5.\+6.\+0. 
