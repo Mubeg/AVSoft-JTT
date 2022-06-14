@@ -6,6 +6,8 @@ clean:
 start_test:
 	sudo dmesg -C
 	sudo insmod test_task.ko
+test:
+	./test.sh 1>/dev/null
 
 test1:
 	make start_test
