@@ -24,9 +24,46 @@ test2:
 
 test3:
 	make start_test
-	echo "12345678" > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
 	cat /proc/test_task
-	echo "" > /proc/test_task
+	make end_test
+
+test4:
+	make start_test
+	cat ./Tests/test2.txt > /proc/test_task
+	cat /proc/test_task
+	make end_test
+
+test5:
+	make start_test
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat ./Tests/test1.txt > /proc/test_task
+	cat /proc/test_task
+	make end_test
+
+test6:
+	make start_test
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat ./Tests/test2.txt > /proc/test_task
+	cat /proc/test_task
 	make end_test
 
 
